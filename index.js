@@ -1,26 +1,22 @@
-const MainMenuQuestions = [
-    {
-        type: 'list',
-        name: 'option',
-        message: 'Select an option.',
-        choices: [
-            { value: 'view_departments', name: "View Departments" },
-            { value: 'view_roles', name: "View Roles" },
-            { value: 'view_employees', name: "View Employees" },
-            { value: 'add_department', name: "Add Department" },
-            { value: 'add_role', name: "Add Role" },
-            { value: 'add_employee', name: "Add Employee" },
-            { value: 'update_role', name: "Update Role" },
-        ]
-    }
-]
+const inquirer = require('inquirer');
+const { MainMenuQuestions, AddDepartmentQuestions, AddRoleQuestions, AddEmployeeQuestions, UpdateEmployeeRoleQuestions };
+const EmployeeDatabase = require('./db/EmployeeDatabase.js');
 
-const AddDeptQuestions = [
-    {
-        type: 'input',
-        name: 'department_name',
-        message: 'Enter New Department Name'
-    }
-]
+const db = new EmployeeDatabase({
+    host: 'localhost';
+    user: 'root',
+    password: 'happyjoy',
+    database: 'employee_db'
+});
 
-const 
+db.connect();
+
+const doMenuQuestions = () => {
+
+    inquirer
+        .prompt(mainMenuQuestions)
+        .then((response) => {
+
+            
+        })
+}
