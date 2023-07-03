@@ -57,8 +57,15 @@ const AddRoleQuestions = [
     },
     {
         type: 'input',
-        name: 'tlast_name',
+        name: 'last_name',
         message: 'Enter Last Name'
+    },
+    {
+        type: 'list',
+        name: 'role_id',
+        message: 'Select Role for Employee',
+        choices: [
+        ],
     },
     {
         type: 'list',
@@ -76,7 +83,7 @@ const UpdateEmployeeRoleQuestions = [
         message: 'Select the Employee to Update:',
         choices: [
         ],
-    }
+    },
     {
         type: 'list',
         name: 'role_id',

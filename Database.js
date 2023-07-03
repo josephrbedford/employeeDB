@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 
-Class Database {
+class Database {
     constructor (options) { 
         this.options = options 
         this.db = null

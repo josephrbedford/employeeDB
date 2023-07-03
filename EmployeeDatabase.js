@@ -18,7 +18,7 @@ getDepartments () {
 
 getRoles () {
     return new Promise((resolve, reject) => {
-    this.db.query("SELECT role.id, role.title, CONCAT('£', FORMAT (salary, 0), ' p/a') as salary, department.name as department_name FROM role INNER JOIN Department ON role.department_id = Department.id`, (err, results) => {
+    this.db.query(`SELECT role.id, role.title, CONCAT('£', FORMAT (salary, 0), ' p/a') as salary, department.name as department_name FROM role INNER JOIN Department ON role.department_id = Department.id`, (err, results) => {
         if (err) {
             reject (err);
         }
@@ -35,15 +35,15 @@ getEmployees() {
             CONCAT(employee.first_name, ' ', employee.last_name) as name,
             role.title as role_title,
             role.salary as role_salary,
-        I   department.name as department_name, 
-            IF(CONCAT(manager.first_name, ' ', manager.last_name) IS NULL , '', CONCAT(manager.first_name,
+            department.name as department_name, 
+            IF(CONCAT(manager.first_name, ' ', manager.last_name) IS NULL , '', CONCAT(manager.first_name, ' ', manager.last_name)) as manager_name
         
         
         FROM employee
             INNER JOIN role ON employee.role_id = role.id
             INNER JOIN department ON role.department_id = department.id
             LEFT JOIN employee as manager ON employee.manager_id = manager.id`
-        , (err, results) {
+            , (err, results) => {
             if (err) {
                 reject(err);
             }
@@ -58,7 +58,7 @@ addDepartment (department) {
               if (err) {
                   reject(err);
              }
-        resolve('Department ${department.department_name} added successfully`);
+        resolve(`Department ${department.department_name} added successfully`);
 
        });
     });
@@ -77,7 +77,7 @@ addRole(role) {
             if (err) {
                 reject (err);
             }
-                resolve('Role ${role.title} added successfully`);
+                resolve(`Role ${role.title} added successfully`);
             });
         });
 }
@@ -89,4 +89,29 @@ addEmployee (employee) {
         last_name: employee.last_name, 
         role_id: employee.role_id,
         manager_id: employee.manager_id,
-                
+    };
+
+    return new Promise((resolve, reject) => {
+        this.db.query('INSERT INTO employee SET ?', employeeData, (err, results) => { 
+            if (err) {
+                reject(err);
+            }
+            
+            resolve(`${employee.first_name} ${employee.last_name} added successfully`);
+        });
+    });
+}
+        udpateEmployeeRole(employee) {
+            return new Promise((resolve, reject) => {
+                this.db.query(`UPDATE employee SET role_id=? WHERE id=?', [employee.role_id, employee.employee_id])`, (err, results) => {
+                    if (err) {
+                    reject(err);
+                    }
+                    resolve(results);
+                });
+            });
+        }
+    }
+
+        module.exports = EmployeeDatabase;
+        

@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const { MainMenuQuestions, AddDepartmentQuestions, AddRoleQuestions, AddEmployeeQuestions, UpdateEmployeeRoleQuestions } = require('./questions.js');
-const EmployeeDatabase = require('./db/EmployeeDatabase.js');
+const EmployeeDatabase = require('./EmployeeDatabase.js');
 
 const db = new EmployeeDatabase({
-    host: 'localhost';
+    host: 'localhost',
     user: 'root',
     password: 'happyjoy',
     database: 'employee_db'
@@ -14,7 +14,7 @@ db.connect();
 const doMenuQuestions = () => {
 
     inquirer
-        .prompt(mainMenuQuestions)
+        .prompt(MainMenuQuestions)
         .then((response) => {
 
             switch(response.option) {
@@ -43,7 +43,7 @@ const doMenuQuestions = () => {
         })
 }
 
-const view_departments = () => void
+// const view_departments = () => void
 
 const view_departments = () => {
     db.getDepartments().then((results) => {
@@ -55,14 +55,14 @@ const view_departments = () => {
 const view_roles = () => {
     db.getRoles().then((results) => {
         console.table(results);
-        doMenuQuestions;
+        doMenuQuestions();
     })
 }
 
 const view_employees = () => {
     db.getEmployees().then((results) => {
         console.table(results);
-        doMenuQuestions;
+        doMenuQuestions();
     })
 }
 
@@ -72,12 +72,14 @@ const add_department = () => {
         .then((response) => {
             db.addDepartment(response).then((results) => {
                 console.log('\n', results, '\n');
-                doMenuQuestions; });
+                doMenuQuestions(); });
         })
 }
 
 const add_role = () => {
     db.getDepartments().then((results) => {
+
+        const departmentQuestion = AddRoleQuestions[2];
         results.forEach((department) => {
             departmentQuestion.choices.push({
                 value: department.id,
@@ -89,7 +91,7 @@ const add_role = () => {
             .then((response) => {
                 db.addRole(response).then((results) => {
                     console.log('\n', results, '\n');
-                    doMenuQuestions; })
+                    doMenuQuestions(); })
             })
         });
     }
@@ -97,6 +99,7 @@ const add_role = () => {
 const add_employee = () => {
     db.getRoles().then((results) => {
         const roleQuestion = AddEmployeeQuestions[2];
+        console.log('rq ' + roleQuestion.choices);
         results.forEach((role) => {
 
             const role_summary = `${role.title} (${role.department_name}: ${role.salary})`;
@@ -109,6 +112,8 @@ const add_employee = () => {
         db.getEmployees().then((results) => {
 
             const managerQuestion = AddEmployeeQuestions[3];
+            console.log('Mq' + managerQuestion);
+            console.log('Choices' + managerQuestion.choices);
             results.forEach((employee) => {
                 managerQuestion.choices.push({
                     value: employee.id,
@@ -147,7 +152,7 @@ const update_role = () => {
 
         db.getRoles().then((results) => {
             const roleQuestion = UpdateEmployeeQuestions[1];
-            results.forEach((erole) => {
+            results.forEach((role) => {
             roleQuestion.choices.push({
                 value: role.id,
                 name: role.title
