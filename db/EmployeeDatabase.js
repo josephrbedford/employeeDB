@@ -35,7 +35,7 @@ getEmployees() {
             CONCAT(employee.first_name, ' ', employee.last_name) as name,
             role.title as role_title,
             role.salary as role_salary,
-            department.name as department_name, 
+        I   department.name as department_name, 
             IF(CONCAT(manager.first_name, ' ', manager.last_name) IS NULL , '', CONCAT(manager.first_name, ' ', manager.last_name)) as manager_name
         
         
@@ -51,7 +51,6 @@ getEmployees() {
         });
     });
 }   
-
 addDepartment (department) {
         
     return new Promise((resolve, reject) => {
@@ -102,18 +101,18 @@ addEmployee (employee) {
         });
     });
 }
-        
-udpateEmployeeRole(employee) {
+        udpateEmployeeRole(employee) {
             return new Promise((resolve, reject) => {
-                this.db.query(`UPDATE employee SET role_id=? WHERE id=?`, [employee.role_id, employee.employee_id], (err, results) => {
+                this.db.query(`UPDATE employee SET role_id=? WHERE id=?', [employee.role_id, employee.employee_id])`, (err, results) => {
                     if (err) {
-                        reject(err);
+                    reject(err);
                     }
-                        resolve(`Employee moved to role ID ${employee.role_id}.`);
+                    resolve(results);
                 });
             });
         }
     }
 
-
         module.exports = EmployeeDatabase;
+        I
+        
