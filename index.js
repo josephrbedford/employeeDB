@@ -142,7 +142,7 @@ const add_employee = () => {
 const update_role = () => {
     db.getEmployees().then((results) => {
 
-        const employeeQuestion = UpdateEmployeeQuestions[0];
+        const employeeQuestion = UpdateEmployeeRoleQuestions[0];
         results.forEach((employee) => {
             employeeQuestion.choices.push({
                 value: employee.id,
@@ -151,7 +151,7 @@ const update_role = () => {
         });
 
         db.getRoles().then((results) => {
-            const roleQuestion = UpdateEmployeeQuestions[1];
+            const roleQuestion = UpdateEmployeeRoleQuestions[1];
             results.forEach((role) => {
             roleQuestion.choices.push({
                 value: role.id,
@@ -162,7 +162,7 @@ const update_role = () => {
         inquirer
         .prompt(UpdateEmployeeRoleQuestions)
         .then((response) => {
-            db.updateEmployeeRole(response).then((results) => {
+            db.udpateEmployeeRole(response).then((results) => {
                 console.log('\n', results, '\n');
                 doMenuQuestions();
 

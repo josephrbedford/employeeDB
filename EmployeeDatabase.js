@@ -51,6 +51,7 @@ getEmployees() {
         });
     });
 }   
+
 addDepartment (department) {
         
     return new Promise((resolve, reject) => {
@@ -101,17 +102,18 @@ addEmployee (employee) {
         });
     });
 }
-        udpateEmployeeRole(employee) {
+        
+udpateEmployeeRole(employee) {
             return new Promise((resolve, reject) => {
-                this.db.query(`UPDATE employee SET role_id=? WHERE id=?', [employee.role_id, employee.employee_id])`, (err, results) => {
+                this.db.query(`UPDATE employee SET role_id=? WHERE id=?`, [employee.role_id, employee.employee_id], (err, results) => {
                     if (err) {
-                    reject(err);
+                        reject(err);
                     }
-                    resolve(results);
+                        resolve(`Employee moved to role ID ${employee.role_id}.`);
                 });
             });
         }
     }
 
+
         module.exports = EmployeeDatabase;
-        
